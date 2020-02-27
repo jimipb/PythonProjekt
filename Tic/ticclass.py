@@ -96,10 +96,10 @@ class tictac:
             self.drawcnt += 1
         self.canvas.tag_bind("end","<Button-1>",self.newgame)
         
-        self.canvas.create_rectangle(80,217,235,282,fill="light grey",tags="end")
+        self.canvas.create_rectangle(80,218,235,282,fill="light grey",tags="end")
         self.canvas.create_text(155,250,text="Wins Player 1: " + str(self.wincnt1) +
             "\nWins Player 2: " + str(self.wincnt2) + "\n        Draws:" + str(self.drawcnt),
-            tags="end")
+            tags="end",font=("Serif", 8))
 
     def newgame(self,event):
         self.turn=True
@@ -124,14 +124,6 @@ class tictac:
                     self.turn=True
                     break
         #check if player could win in two rounds
-        #for i in range(9):
-        #    for j in range(9):
-        #        if (self.wincheck(self.state1 + [i,j]) and i not in
-        #        self.state1+self.state2 and j not in self.state1+self.state2
-        #        and self.turn==False):
-        #            self.state2.append(i)
-        #            self.turn=True
-        #            break
         if self.turn==False:
             for i in range(0,8,2):
                 if i not in self.state1+self.state2:
@@ -146,21 +138,32 @@ class tictac:
                     break
         self.update()
 
-def one():
-    onep.destroy()
-    twop.destroy()
-    tictac(master,1)
+class menu:
+    def __init__(self,master):
+        self.canvas = tk.Canvas(master,height=310,width=310)
+        self.canvas.pack()
 
-def two():
-    onep.destroy()
-    twop.destroy()
-    tictac(master,2)
+        self.canvas.create_rectangle(55,80,255,140,fill="light grey",tags="single")
+        self.canvas.create_text(155,110,text="1 Player",tags="single")
+        self.canvas.tag_bind("single","<Button-1>",self.one)
+
+        self.canvas.create_rectangle(55,160,255,220,fill="light grey",tags="twop")
+        self.canvas.create_text(155,190,text="2 Player",tags="twop")
+        self.canvas.tag_bind("twop","<Button-1>",self.two)
+
+
+    def one(self,event):
+        self.canvas.destroy()
+        tictac(master,1)
+
+    def two(self,event):
+        self.canvas.destroy()
+        tictac(master,2)
+
 
 master = tk.Tk()
+master.title("Tic-Tac-Toe")
 
-onep = tk.Button(master, text="1 Player ", command=one)
-twop = tk.Button(master, text="2 Players", command=two)
-onep.pack()
-twop.pack()
+menu(master)
 
 tk.mainloop()
