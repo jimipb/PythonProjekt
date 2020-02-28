@@ -123,15 +123,16 @@ class tictac:
                     self.state2.append(i)
                     self.turn=True
                     break
-        #check if player could win in two rounds
+        #check if edges and middle is free 
         if self.turn==False:
             for i in range(0,8,2):
                 if i not in self.state1+self.state2:
                     self.state2.append(i)
                     self.turn=True
                     break
+        #check the rest
         if self.turn==False:
-            for i in range(1,9,3):
+            for i in range(1,9,2):
                 if i not in self.state1+self.state2:
                     self.state2.append(i)
                     self.turn=True
