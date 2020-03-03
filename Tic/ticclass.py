@@ -10,9 +10,9 @@ class tictac:
         self.canvas.pack()
         self.turn   = True
         self.players= players
-        self.wincnt1 = 0
-        self.wincnt2 = 0
-        self.drawcnt = 0
+        self.wincnt1= 0
+        self.wincnt2= 0
+        self.drawcnt= 0
         self.draw()
         
     def wincheck(self,state):
@@ -94,8 +94,13 @@ class tictac:
             self.canvas.create_text(155,155,font=("Purisa", 20),text="Draw!",
                 tags="end")
             self.drawcnt += 1
+
+        self.canvas.create_oval(10,10,30,30,width=1,fill="light grey",tags="tomenu")
+        self.canvas.create_line(14,14,26,26,width=2,tags="tomenu")
+        self.canvas.create_line(26,14,14,26,width=2,tags="tomenu")
+        self.canvas.tag_bind("tomenu","<Button-1>",self.backtomenu)
         self.canvas.tag_bind("end","<Button-1>",self.newgame)
-        
+
         self.canvas.create_rectangle(80,218,235,282,fill="light grey",tags="end")
         self.canvas.create_text(155,250,text="Wins Player 1: " + str(self.wincnt1) +
             "\nWins Player 2: " + str(self.wincnt2) + "\n        Draws:" + str(self.drawcnt),
@@ -103,10 +108,14 @@ class tictac:
 
     def newgame(self,event):
         self.turn=True
-        self.canvas.delete("end","tic")
+        self.canvas.delete("end","tic","tomenu")
         self.state1 = []
         self.state2 = []
         self.update()
+
+    def backtomenu(self,event):
+        self.canvas.destroy()
+        menu(master)
 
     def AI(self):
         #check if AI could win next round
@@ -144,14 +153,15 @@ class menu:
         self.canvas = tk.Canvas(master,height=310,width=310)
         self.canvas.pack()
 
-        self.canvas.create_rectangle(55,80,255,140,fill="light grey",tags="single")
-        self.canvas.create_text(155,110,text="1 Player",tags="single")
+        self.canvas.create_text(155,60,text="TicTacToe",font=("Purisa", 28))
+
+        self.canvas.create_rectangle(55,120,255,180,fill="light grey",tags="single")
+        self.canvas.create_text(155,150,text="1 Player",tags="single")
         self.canvas.tag_bind("single","<Button-1>",self.one)
 
-        self.canvas.create_rectangle(55,160,255,220,fill="light grey",tags="twop")
-        self.canvas.create_text(155,190,text="2 Player",tags="twop")
+        self.canvas.create_rectangle(55,200,255,260,fill="light grey",tags="twop")
+        self.canvas.create_text(155,230,text="2 Player",tags="twop")
         self.canvas.tag_bind("twop","<Button-1>",self.two)
-
 
     def one(self,event):
         self.canvas.destroy()
