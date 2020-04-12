@@ -1,5 +1,5 @@
 import tkinter as tk
-import random
+import time
 
 class tictac:
     def __init__(self, master, players):
@@ -14,7 +14,7 @@ class tictac:
         self.wincnt2= 0
         self.drawcnt= 0
         self.draw()
-        
+
     def wincheck(self,state):
         win = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
         for comb in win:
@@ -38,11 +38,11 @@ class tictac:
                     self.turn = not self.turn
             self.update()
             if self.players==1:
-                if (len(self.state1+self.state2) < 9 and not 
+                if (len(self.state1+self.state2) < 9 and not
                     self.wincheck(self.state1)):
                     self.AI()
         return fn
-    
+
     def circle(self,x,y):
         item = self.canvas.create_oval(x-30,y-30,x+30,y+30,width=3,tags="tic")
         return item
@@ -64,8 +64,8 @@ class tictac:
             #every 3rd iteration
             #the end coords are shifted 100
             self.canvas.create_rectangle(5+(i%3)*100,5+(int(i/3)*100),
-            5+(i%3+1)*100,5+(int(i/3)+1)*100, fill="light grey",
-                    width=3,tags=btns[i])
+                5+(i%3+1)*100,5+(int(i/3)+1)*100, fill="light grey",
+                width=3,tags=btns[i])
             self.canvas.tag_bind(btns[i],"<Button-1>",self.clicked(i))
 
     def update(self):
@@ -80,6 +80,9 @@ class tictac:
             self.gameoverscreen()
 
     def gameoverscreen(self):
+        btns = ["1","2","3","4","5","6","7","8","9"]
+        for i in range(9):
+            self.canvas.tag_unbind(btns[i],"<Button-1>")
         self.canvas.create_oval(20,95,295,215,fill = "light grey",
             outline = "black",width=1,tags="end")
         if self.wincheck(self.state1):
@@ -132,7 +135,7 @@ class tictac:
                     self.state2.append(i)
                     self.turn=True
                     break
-        #check if edges and middle is free 
+        #check if edges and middle is free
         if self.turn==False:
             for i in range(0,8,2):
                 if i not in self.state1+self.state2:
@@ -148,6 +151,7 @@ class tictac:
                     break
         self.update()
 
+#Besser: Inheritance
 class menu:
     def __init__(self,master):
         self.canvas = tk.Canvas(master,height=310,width=310)
